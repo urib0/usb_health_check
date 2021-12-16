@@ -18,4 +18,4 @@ for device in deviceList:
     s = ""
     for i in range(len(raw.split(";")) - 1):
         s += raw.split(";")[i].split("=")[0]
-    print(s)
+    print(s + ":" + BASE_DIR + device)
