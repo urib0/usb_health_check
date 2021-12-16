@@ -13,9 +13,15 @@ if len(deviceList) == 0:
     sys.exit()
 
 for device in deviceList:
-    readSer = serial.Serial(BASE_DIR + device, SERIAL_RATE, timeout=3)
-    raw = readSer.readline().decode().replace('\n', '')
-    s = ""
-    for i in range(len(raw.split(";")) - 1):
-        s += raw.split(";")[i].split("=")[0]
-    print(s + ":" + BASE_DIR + device)
+    try:
+        readSer = serial.Serial(BASE_DIR + device, SERIAL_RATE, timeout=3)
+        raw = readSer.readline().decode().replace('\n', '')
+        s = ""
+        for i in range(len(raw.split(";")) - 2):
+            s += raw.split(";")[i].split("=")[0]
+        if len(s) == 0:
+            print("unknown:" + BASE_DIR + device)
+        else:
+            print(s + ":" + BASE_DIR + device)
+    except requests.exceptions.RequestException as e:
+        print('request failed: ', e)
